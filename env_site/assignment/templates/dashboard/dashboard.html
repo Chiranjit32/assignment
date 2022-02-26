@@ -1,0 +1,127 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Assignment Dashboard</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/select2.min.css' %}">
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/canvasjs.stock.min.js' %}"></script>
+</head>
+
+<body>
+
+    <div class="container">
+        <h2>Stock History</h2>
+        <form id="stocks_data" action="{% url 'stocks_data' %}" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="sel2">Stocks Selection (hold shift to select more than one):</label>
+                <select class="form-control multiselect" name="stocks[]" id="stocks" multiple>
+                    <option value="aa">AA</option>
+                    <option value="aapl">AAPL</option>
+                    <option value="amzn">AMZN</option>
+                    <option value="are">ARE</option>
+                    <option value="czr">CZR</option>
+                    <option value="fb">FB</option>
+                    <option value="gme">GME</option>
+                    <option value="googl">GOOGL</option>
+                    <option value="iqv">IQV</option>
+                    <option value="mpwr">MPWR</option>
+                    <option value="mro">MRO</option>
+                    <option value="msft">MSFT</option>
+                    <option value="nvda">NVDA</option>
+                    <option value="sbny">SBNY</option>
+                    <option value="tsla">TSLA</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-default">Submit</button>
+        </form>
+    </div>
+    <div class="col-md-12 cb_stocks_chart">
+        <div class="col-md-10" id="chartContainer" style="height: 450px; width: 100%;"></div>
+    </div>
+</body>
+<script src="{% static 'js/select2.min.js' %}"></script>
+<script type="text/javascript">
+    var stocks = ['aa', 'aapl', 'amzn', 'are', 'czr', 'fb', 'gme', 'googl', 'iqv', 'mpwr', 'mro', 'msft', 'nvda', 'sbny', 'tsla'];
+    $(document).ready(function (e) {
+        $('.multiselect').select2({
+            tags: true,
+        });
+    });
+
+
+    $('#stocks_data').on('submit', function (e) {
+        e.preventDefault();
+        var formData = new FormData(this);
+        if ($('#stocks').val().length > 2 && $('#stocks').val().length < 7) {
+            stocks = $('#stocks').val();
+            showChartData();
+        } else {
+            alert("You can select minimum 2 stocks and maximum 7 stocks.")
+        }
+    });
+
+    $(document).ready(function () {
+        showChartData();
+    })
+
+
+    function showChartData() {
+        $.ajax({
+            type: "POST",
+            url: '{% url "stocks_data" %}',
+            data: ({ stocks: stocks, csrfmiddlewaretoken: "{{csrf_token}}" }),
+            success: function (response) {
+                graphs_data = response.graphs_data;
+                for (i=0; i<graphs_data.length; i++) {
+                    for (j=0; j<graphs_data[i]['dataPoints'].length; j++) {
+                        graphs_data[i]['dataPoints'][j]['x'] = new Date(graphs_data[i]['dataPoints'][j]['x'])
+                    }
+                }
+                var chart = new CanvasJS.Chart("chartContainer", {
+                    title: {
+                        text: "Stocks Chart"
+                    },
+                    axisX: {
+                        valueFormatString: "MMM YYYY"
+                    },
+                    axisY2: {
+                        title: "Stocks Price",
+                        prefix: "₹",
+                        suffix: ""
+                    },
+                    toolTip: {
+                        shared: true
+                    },
+                    legend: {
+                        cursor: "pointer",
+                        verticalAlign: "top",
+                        horizontalAlign: "center",
+                        dockInsidePlotArea: true,
+                        itemclick: toogleDataSeries
+                    },
+                    data: response.graphs_data
+                });
+                chart.render();
+            }
+        });
+    }
+
+
+    function toogleDataSeries(e) {
+        if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+            e.dataSeries.visible = false;
+        } else {
+            e.dataSeries.visible = true;
+        }
+        chart.render();
+    }
+</script>
+
+</html>
