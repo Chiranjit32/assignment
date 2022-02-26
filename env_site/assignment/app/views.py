@@ -36,7 +36,7 @@ def dashboardView(request):
 
 def stocksData(request):
     stocks = request.POST.getlist('stocks[]')
-    stocks_data = StockData.objects.all().values()[:5]
+    stocks_data = StockData.objects.all().values()
     graphs_data = []
     for each in stocks:
         single_row = {}
