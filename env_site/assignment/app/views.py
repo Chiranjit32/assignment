@@ -45,7 +45,7 @@ def stocksData(request):
         single_row['name'] = each
         single_row['showInLegend'] = True
         single_row['markerSize'] = 0
-        single_row['yValueFormatString'] = "#,###"
+        single_row['yValueFormatString'] = "₹#,###"
         single_row['dataPoints'] = []
         for st in stocks_data:
             st_single = {}
