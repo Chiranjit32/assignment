@@ -59,7 +59,7 @@
     $('#stocks_data').on('submit', function (e) {
         e.preventDefault();
         var formData = new FormData(this);
-        if ($('#stocks').val().length > 2 && $('#stocks').val().length < 7) {
+        if ($('#stocks').val().length > 2 && $('#stocks').val().length < 8) {
             stocks = $('#stocks').val();
             showChartData();
         } else {
