@@ -10,29 +10,21 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
 
-class HelloView(APIView):
+class LoginView(APIView):
     permission_classes = (IsAuthenticated, )
 
-    def get(self, request):
-        content = {'message': 'Hello, ' + request.user.first_name}
+    def post(self, request):
+        content = {'status': 200, 'message': 'Hello, ' +
+                   request.user.first_name}
         return Response(content)
 
-# class DashboardView(APIView):
-#     permission_classes = (IsAuthenticated, )
 
-#     def get(self, request):
-#         content = {'message': 'Hello, ' + request.user.first_name}
-#         return Response(content)
+class DashboardView(APIView):
+    # permission_classes = (IsAuthenticated, )
 
-
-def dashboardView(request):
-    context = {}
-    return render(request, "dashboard/dashboard.html", context)
-    # if request.user.is_authenticated:
-    #     return render(request, "dashboard/dashboard.html", context)
-    # else:
-    #     return redirect('token_obtain_pair')
-
+    def get(self, request):
+        context = {}
+        return render(request, "dashboard/dashboard.html", context)
 
 def stocksData(request):
     stocks = request.POST.getlist('stocks[]')

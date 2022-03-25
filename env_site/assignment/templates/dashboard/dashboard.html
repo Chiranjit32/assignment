@@ -68,8 +68,27 @@
     });
 
     $(document).ready(function () {
-        showChartData();
-    })
+        checkAuthenticated();
+        // showChartData();
+    });
+
+    function checkAuthenticated() {
+        $.ajax({
+            type: "POST",
+            url: '{% url "login" %}',
+            headers: {
+                "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjQ4MjI5Mzk4LCJpYXQiOjE2NDgyMjkwOTgsImp0aSI6IjJhN2E2MmI3ZDdjZDQ3ZmNhMDM0ODU3ZDNjNTk4NTgzIiwidXNlcl9pZCI6Mn0.-Kogx1FzouD-rQwslOmmQVmyYQ20IGeYP-lRxkOTJhs",
+            },
+            data: ({csrfmiddlewaretoken: "{{csrf_token}}" }),
+            success: function (response) {
+                if (response.status == 200) {
+                    showChartData();
+                } else {
+                    alert("User is not logged in.")
+                }
+            }
+        });
+    }
 
 
     function showChartData() {
@@ -79,8 +98,8 @@
             data: ({ stocks: stocks, csrfmiddlewaretoken: "{{csrf_token}}" }),
             success: function (response) {
                 graphs_data = response.graphs_data;
-                for (i=0; i<graphs_data.length; i++) {
-                    for (j=0; j<graphs_data[i]['dataPoints'].length; j++) {
+                for (i = 0; i < graphs_data.length; i++) {
+                    for (j = 0; j < graphs_data[i]['dataPoints'].length; j++) {
                         graphs_data[i]['dataPoints'][j]['x'] = new Date(graphs_data[i]['dataPoints'][j]['x'])
                     }
                 }
