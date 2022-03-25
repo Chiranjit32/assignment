@@ -16,7 +16,7 @@
 <body>
 
     <div class="container">
-        <h2>Stock History</h2>
+        <h2 class="login_text">Please Login to See the Dashboard</h2>
         <form id="stocks_data" action="{% url 'stocks_data' %}" method="post">
             {% csrf_token %}
             <div class="form-group">
@@ -49,11 +49,11 @@
 <script src="{% static 'js/select2.min.js' %}"></script>
 <script type="text/javascript">
     var stocks = ['aa', 'aapl', 'amzn', 'are', 'czr', 'fb', 'gme', 'googl', 'iqv', 'mpwr', 'mro', 'msft', 'nvda', 'sbny', 'tsla'];
-    $(document).ready(function (e) {
-        $('.multiselect').select2({
-            tags: true,
-        });
+    // $(document).ready(function (e) {
+    $('.multiselect').select2({
+        tags: true,
     });
+    // });
 
 
     $('#stocks_data').on('submit', function (e) {
@@ -77,11 +77,12 @@
             type: "POST",
             url: '{% url "login" %}',
             headers: {
-                "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjQ4MjI5Mzk4LCJpYXQiOjE2NDgyMjkwOTgsImp0aSI6IjJhN2E2MmI3ZDdjZDQ3ZmNhMDM0ODU3ZDNjNTk4NTgzIiwidXNlcl9pZCI6Mn0.-Kogx1FzouD-rQwslOmmQVmyYQ20IGeYP-lRxkOTJhs",
+                "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjQ4MjI5OTk5LCJpYXQiOjE2NDgyMjk2OTksImp0aSI6IjViZDMxYWJlODNkOTRlMzU4NmQ3NzIwYWU5ZjI5ZTU1IiwidXNlcl9pZCI6Mn0.zQS4fEZ-AJC-czctpmlzx_p8ceC0b3-cRUqCZDZAMrU",
             },
-            data: ({csrfmiddlewaretoken: "{{csrf_token}}" }),
+            data: ({ csrfmiddlewaretoken: "{{csrf_token}}" }),
             success: function (response) {
                 if (response.status == 200) {
+                    $('.login_text').text("Stocks Data");
                     showChartData();
                 } else {
                     alert("User is not logged in.")
