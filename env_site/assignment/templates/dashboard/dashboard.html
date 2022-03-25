@@ -61,7 +61,8 @@
         var formData = new FormData(this);
         if ($('#stocks').val().length > 2 && $('#stocks').val().length < 8) {
             stocks = $('#stocks').val();
-            showChartData();
+            checkAuthenticated();
+            // showChartData();
         } else {
             alert("You need to select minimum 3 stocks and maximum 7 stocks.")
         }
@@ -77,7 +78,7 @@
             type: "POST",
             url: '{% url "login" %}',
             headers: {
-                "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjQ4MjI5OTk5LCJpYXQiOjE2NDgyMjk2OTksImp0aSI6IjViZDMxYWJlODNkOTRlMzU4NmQ3NzIwYWU5ZjI5ZTU1IiwidXNlcl9pZCI6Mn0.zQS4fEZ-AJC-czctpmlzx_p8ceC0b3-cRUqCZDZAMrU",
+                "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjQ4MjMwMzk5LCJpYXQiOjE2NDgyMzAwOTksImp0aSI6IjRjOGE4NTEyNTg3MDQ3OTJhYTJiNGFjOGQ3NWNlMDZkIiwidXNlcl9pZCI6Mn0.cVcLKop-QfQlxmICy20eQJi67YA4xbUKlYD4sOJsKOc",
             },
             data: ({ csrfmiddlewaretoken: "{{csrf_token}}" }),
             success: function (response) {
