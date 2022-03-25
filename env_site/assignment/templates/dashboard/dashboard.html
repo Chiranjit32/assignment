@@ -78,7 +78,7 @@
             type: "POST",
             url: '{% url "login" %}',
             headers: {
-                "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjQ4MjMwMzk5LCJpYXQiOjE2NDgyMzAwOTksImp0aSI6IjRjOGE4NTEyNTg3MDQ3OTJhYTJiNGFjOGQ3NWNlMDZkIiwidXNlcl9pZCI6Mn0.cVcLKop-QfQlxmICy20eQJi67YA4xbUKlYD4sOJsKOc",
+                "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjQ4MjMwODMxLCJpYXQiOjE2NDgyMzA1MzEsImp0aSI6Ijk5NWJmN2M1ZjQ4MTQ0MWNhNDkyZTRkNmE0ZGYxOTZhIiwidXNlcl9pZCI6Mn0.3A7EU_g1NaIgjBltqVctfYUbkSyydeaAv6rcdWcYHxk",
             },
             data: ({ csrfmiddlewaretoken: "{{csrf_token}}" }),
             success: function (response) {

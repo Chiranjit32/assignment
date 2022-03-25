@@ -14,8 +14,7 @@ class LoginView(APIView):
     permission_classes = (IsAuthenticated, )
 
     def post(self, request):
-        content = {'status': 200, 'message': 'Hello, ' +
-                   request.user.first_name}
+        content = {'status': 200, 'message': 'Hello, ' + request.user.first_name}
         return Response(content)
 
 
